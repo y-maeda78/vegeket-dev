@@ -1,5 +1,5 @@
 # VegeKet（ベジケット）
-公開URL：
+公開中URL：
 https://vegeket-app-v1-f32319ce22f2.herokuapp.com/
 
 ---
