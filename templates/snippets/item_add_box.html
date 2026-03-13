@@ -1,0 +1,37 @@
+<div class="border">
+  <img src="{{object.image.url}}" width="100%" class="bg-white" />
+  <div class="bg-light text-center text-secondary overflow-hidden">
+    <div class="my-2 py-2">
+      <h2 class="lead" style="font-size: 0.9rem;">{{object.name}}</h2>
+      <p>¥{{object.price}}</p>
+      <form action="/cart/add/" method="POST" class="p-2">
+        {% csrf_token %}
+        <input type="hidden" name="item_pk" value="{{object.pk}}" />
+        <div class="form-row align-items-center">
+          <div class="col-7">
+            <p>
+              <input type="number" class="form-control d-inline w-50" name="quantity" value="1" max="{{object.stock}}"> 点
+            </p>
+          </div>
+          <div class="col-4">
+            <p>
+            {% if object.stock == 0 %}
+            <button
+              type="submit"
+              class="btn btn-sm btn-outline-dark" style="font-size: 0.7rem;white-space: nowrap;"
+              disabled
+            >
+              売り切れ
+            </button>
+            {% else %}
+            <button type="submit" class="btn btn-sm btn-info">
+              追加
+            </button>
+            {% endif %}
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

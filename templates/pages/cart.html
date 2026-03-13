@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ TITLE }} | カート
+{% endblock %}
+ 
+{% block main %}
+ 
+<div class="container ">
+  <div class="row my-5">
+    <div class="col-12">
+      <h2>カート</h2>
+      {% if object_list|length != 0 %}
+      <table class="table mb-5 text-right">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">品名</th>
+            <th scope="col">単価</th>
+            <th scope="col">個数</th>
+            <th scope="col">計</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>No.{{forloop.counter}}</td>
+            <td>{{object.name}}</td>
+            <td>{{object.price}}</td>
+            <td>
+              <form action="/cart/update/" method="POST" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="item_pk" value="{{object.pk}}">
+                
+                <input type="number" 
+                  class="form-control d-inline w-50 text-right" 
+                  name="quantity" 
+                  value="{{object.quantity}}" 
+                  min="0" 
+                  max="{{object.stock}}" 
+                  onchange="this.form.submit()">
+              </form>
+            </td>
+            <td>{{object.subtotal}}</td>
+            <td><a href="/cart/remove/{{object.pk}}/" class="my-auto btn btn-danger btn-sm">削除</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="lead text-right">小計 ¥{{total}}</p>
+      <p class="lead text-right">税込 ¥{{tax_included_total}}</p>
+
+      <div class="card mb-4 border-info">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-truck"></i> お届け先情報の確認</span>
+          <a href="/profile/" class="btn btn-light btn-sm">お届け先を変更する</a>
+        </div>
+        <div class="card-body text-left">
+          <div class="row">
+            <div class="col-md-8">
+              <p class="mb-1"><strong>お名前：</strong> {{ user.profile.name }}</p>
+              <p class="mb-1"><strong>住所：</strong> 〒{{ user.profile.zipcode }}</p>
+              <p class="mb-1">
+                {{ user.profile.prefecture }}{{ user.profile.city }}{{ user.profile.address1 }}
+                {% if user.profile.address2 %} {{ user.profile.address2 }} {% endif %}
+              </p>
+              <p class="mb-0"><strong>連絡先：</strong> {{ user.profile.tel }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Checkoutボタン -->
+      <form action="/pay/checkout/" method="POST" class="text-right">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info rounded-pill py-2 px-3">ご購入手続きへ進む</button>
+      </form>
+ 
+      {% else %}
+      <p class="">ショッピングカートにアイテムがありません。</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <h2>おすすめ商品</h2>
+  <div class="row mb-5">
+    {% for object in ADDTIONAL_ITEMS %}
+    {% if forloop.counter < 9 %}
+    <div class="col-12 col-lg-3 my-3">
+      {% include 'snippets/item_add_box.html' %}
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- ブラウザバックへの対応 -->
+<script>
+  document.addEventListener("visibilitychange", () => {
+      // visibilityState：違うページへ行って戻ってきた場合
+      if (document.visibilityState === "visible") {
+        window.location = "/pay/cancel/";
+      }
+    },
+    false
+  );
+</script>
+
+{% endblock %}

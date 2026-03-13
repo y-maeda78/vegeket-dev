@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ TITLE }}{% endblock %}</title>
+    <!-- Bootstrap 4.5.0 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <style>
+        a {
+            text-decoration: none !important;
+            transition: opacity 0.3s ease;
+        }
+        a:hover,
+        a:focus{
+            opacity: 0.6;
+        }
+        /* キービジュアル全体を覆うコンテナの高さ調整 */
+        .hero {
+            height: 75vh; /* 例: メインビジュアルの高さをビューポートの60%に設定 */
+            padding: 0 !important; /* BootstrapのPaddingをリセット */
+        }
+        @media (max-width: 767px) {
+            .hero {
+                height: 300px; 
+            }
+        }
+
+        
+
+        /* Slickスライダー自体を絶対位置で親要素全体に広げ、背後に配置 */
+        .hero-slick-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* タイトル要素より小さい値に設定 */
+        }
+
+        .hero-slick-bg,
+        .hero-slick-bg .slick-list,
+        .hero-slick-bg .slick-track,
+        .hero-slick-bg .slick-slide > div {
+            height: 100%;
+        }
+
+        /* スライダー内の画像をコンテナに合わせる */
+        .hero-slick-bg img {
+            height: 100%;
+            width: 100%; /* 画像の幅も100%に */
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .mv {
+            position: relative;
+            z-index: 100;
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #fff;
+            font-weight: 1000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .mv h1{
+            font-family: 'Hiragino Maru Gothic ProN', 'ヒラギノ丸ゴ ProN', 'Meiryo', 'メイリオ', 'Yu Gothic', '游ゴシック', sans-serif;
+            font-size: 6.5vw;
+        }
+        .container{
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .fl{font-size: 20px;}
+        .fm{font-size: 14px;}
+        .fs{font-size: 12px;}
+
+        .fwb{
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        {% block header %}
+        {% include 'snippets/header.html' %}
+        {% include 'snippets/messages.html' %}
+        {% endblock %}
+    </header>
+
+    <main>
+        {% block main %}
+
+
+        
+        {% endblock %}
+    </main>
+
+    <footer>
+        {% block footer %}
+        {% include 'snippets/footer.html' %}
+        {% endblock %}
+    </footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1100,
+        offset: 100,
+        anchorPlacement: 'top-bottom'
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+$(document).ready(function(){
+  $('#heroSlick').slick({
+    slidesToShow: 1,           
+    slidesToScroll: 1,         
+    autoplay: true,            // 自動再生を有効化 
+    autoplaySpeed: 5000,       // 自動再生の間隔（5000ms = 5秒）
+    dots: false,               // 下のページネーションの点を非表示
+    arrows: false,             // 左右の矢印を非表示
+    fade: true,                // スライドをフェードで切り替える（より背景向け）
+    cssEase: 'linear',         // フェード時のアニメーションをスムーズに
+    pauseOnFocus: false,       // フォーカス時も自動再生を停止しない
+    pauseOnHover: false        // マウスオーバー時も自動再生を停止しない
+  });
+});
+</script>
+</body>
+
+</html>
